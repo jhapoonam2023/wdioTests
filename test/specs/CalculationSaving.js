@@ -2,7 +2,7 @@ import CalculatePage from '../pageobjects/RetireSavingCalculatorPage.js'
 import TestData from '../TestData/CalculateRetirementTestData.json' assert {type: 'json'};
 
 
-describe('Submit data with required fields', async () => {
+describe('Retirement Saving Calculation Scenarios', async () => {
     it('Submit Retirement Saving Calculation with Required Fields', async function(){
       //Submit Data with required fields
       await browser.url(TestData.URL.url) 
