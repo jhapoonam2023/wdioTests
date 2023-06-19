@@ -1,5 +1,4 @@
 class RetireSavingCalculatorPage {
-
     get currentAge() {
         return $('input[id=current-age]');
     }
@@ -39,33 +38,17 @@ class RetireSavingCalculatorPage {
     get invalidSavingsIncreaseRateError() {
         return $("span[id='invalid-savings-increase-rate-error']");
     }
-    get btnCalculate() {
-        return $("//div/button[@data-tag-id ='submit']");
+    get btnCalculate() {       
+        return $("//button[@data-tag-id ='submit']");
     }
     get radioBenefitYes() {
         return $("//div/fieldset/ul/li/input[@id ='yes-social-benefits']");
-    }
-    get radioBenefitNo() {
-        return $("[type='radio'][value='N']");
-    }
-    get radioSingleStatus() {
-        return $("[type='radio'][value='S']");
-    }
-
-    get radioMarriedStatus() {
-        return $("yes-social-benefits");
-    }
-    get radioSSNOverride() {
-        return $("social-security-override");
-    }
-    get resultmessage() {
-        return $('#calculator-intro-section');
-    }
-    get resultCalculate() {
-        return $('.container');
-    }
+    }   
+    get resultmessage() {            
+        return $("//section[@id='calculator-intro-section']");
+    }    
     get incomeDefault() {
-        return $("//div[@class='dsg-row-wrapper dsg-m-t-20']/fieldset/div[1]//input[@id='additional-income']");
+       return $("//div[@class='dsg-row-wrapper dsg-m-t-20']/fieldset/div[1]//input[@id='additional-income']");        
     }
     get retirementDurationDefault() {
         return $("//div[@class='dsg-row-wrapper dsg-m-t-20']/fieldset/div[2]//input[@id='retirement-duration']");
@@ -81,7 +64,6 @@ class RetireSavingCalculatorPage {
     get saveChanges() {
         return $("//div[@class='dsg-row-wrapper']//button[contains(text(),'Save changes')]");
     }
-
     get defaultCalculatorMessageValues() {
         return $("//div[@class='dsg-alert-box-info']");
     }
@@ -97,30 +79,18 @@ class RetireSavingCalculatorPage {
     get defaultValueLink() {
         return $("//a[@data-target='#default-values-modal']");
     }
-
     get labelBenefitYes() {
         return $("//label[@for='yes-social-benefits']");
-    }
-
-    get labelResult() {
-        return $("//div[@id='calculator-results-container']");
-    }
+    }    
     get MaritalStatusList() {
         return $$("//input[@name='marital-status']");
     }
-    get singleRadioButton() {
-        return $('#single');
+    get singleRadioButton() {      
+        return $("//input [@id='single']");
     }
-    get marriedRadioButton() {
-        return $('#married');
-    }
-    get yesSSNBenefit() {
-        return $('#yes-social-benefits');
-    }
-
-    get labelSingle() {
-        return $("//label[@for='single']");
-    }
+    get marriedRadioButton() {   
+       return $("//input [@id='married']");
+    }     
     get labelMarried() {
         return $("//label[@for='married']");
     }
@@ -130,8 +100,7 @@ class RetireSavingCalculatorPage {
         //Enter data into various fields
         await this.EnterDataIntoCommonFields(CAge, cRetirementAgre, CIncome, CTotalSaving, CAnuualSaving, SavingIncreaseRate)
 
-        if (this.ValidateSSNBenfitOptions(true)) {
-            browser.pause(2000)
+        if (this.ValidateSSNBenfitOptions(true)) {           
             await this.labelMarried.click()
         }
         else
@@ -167,29 +136,34 @@ class RetireSavingCalculatorPage {
 
     async EnterDataIntoCommonFields(CAge, cRetirementAgre, CIncome, CTotalSaving, CAnuualSaving, SavingIncreaseRate) {
         //Click on Calculate to find out the required fields
-        (await this.btnCalculate).click()
+        await this.btnCalculate.click()
 
         //Enter Current age
+        await this.invalidCurrentAgeError.waitForDisplayed()
         if (this.invalidCurrentAgeError.isDisplayed())
             await this.currentAge.setValue(CAge);
 
         //Enter retirement age
+        await this.invalidRetirementAgeError.waitForDisplayed()
         if ((await this.invalidRetirementAgeError).isDisplayed())
             (await this.retirementAge).setValue(cRetirementAgre);
 
         //Enetr cirrent Income
+        await this.invalidCurrentIncomeError.waitForDisplayed()
         if ((await this.invalidCurrentIncomeError).isDisplayed()) {
             (await this.currentIncome).clearValue();
             (await this.currentIncome).click();
             (await this.currentIncome).setValue(CIncome);
         }
         //Enter current total savings
+        await this.invalidCurrentTotalSavingError.waitForDisplayed()
         if ((await this.invalidCurrentTotalSavingError).isDisplayed()) {
             (await this.currentTotalSavings).clearValue();
             (await this.currentTotalSavings).click();
             (await this.currentTotalSavings).setValue(CTotalSaving);
         }
         //Enter Current annual savings
+        await this.invalidCurrentAnnualSavingError.waitForDisplayed()
         if ((await this.invalidCurrentAnnualSavingError).isDisplayed()) {
             (await this.currentAnnualSavingsPercentage).clearValue();
             (await this.currentAnnualSavingsPercentage).click();
@@ -197,18 +171,19 @@ class RetireSavingCalculatorPage {
         }
 
         //Enter savings increase rate
+        await this.invalidSavingsIncreaseRateError.waitForDisplayed()
         if ((await this.invalidSavingsIncreaseRateError).isDisplayed()) {
             await this.savingIncreaseRate.waitForClickable()
             await this.savingIncreaseRate.clearValue();
             await this.savingIncreaseRate.click();
             await this.savingIncreaseRate.setValue("2");
         }
-
     }
 
    async ValidatePostRetirementFieldDisplay(RadioButtonYes, ExpectedInflation) {
         try {            
-           await RadioButtonYes.waitForDisplayed();
+           await this.RadioButtonYes.waitForDisplayed()
+           await this.ExpectedInflation.waitForDisplayed()
             if (RadioButtonYes.isSelected() && ExpectedInflation.isDisplayed)
                 return true
             else if (!RadioButtonYes.isSelected() && !ExpectedInflation.isDisplayed)
@@ -222,11 +197,12 @@ class RetireSavingCalculatorPage {
 
     async SubmitDataCompleteFields(CAge, cRetirementAgre, CIncome, CSpouseIncome, CTotalSaving, CAnuualSaving, SavingIncreaseRate,
         IncomeDefault, RetirementDurationDefault, RetirementAnnualIncome, PreRetirementROIDefault, PostRetirementROIDefault, ExpectedInflationRate) {
-
+        
+        await this.spouseIncome.waitForClickable()  
         await this.spouseIncome.setValue(CSpouseIncome)
         await this.EnterDataIntoCommonFields(CAge, cRetirementAgre, CIncome, CTotalSaving, CAnuualSaving, SavingIncreaseRate)
 
-        ;(await this.defaultValueLink).waitForDisplayed(5000)
+        await this.defaultValueLink.waitForDisplayed(1000)
         await this.defaultValueLink.click()
 
         await this.incomeDefault.waitForClickable(1000)
@@ -262,7 +238,7 @@ class RetireSavingCalculatorPage {
         await this.preRetirementROIDefault.click()
         await this.preRetirementROIDefault.setValue(PreRetirementROIDefault);
 
-
+        await this.postRetirementROIDefault.waitForClickable()
         await this.postRetirementROIDefault.clearValue()
         await this.postRetirementROIDefault.click()
         await this.postRetirementROIDefault.setValue(PostRetirementROIDefault);
@@ -272,7 +248,7 @@ class RetireSavingCalculatorPage {
         await expect(this.defaultCalculatorMessageValues).toHaveTextContaining('Default calculator values')
 
         await this.btnCalculate.click();
-        await this.labelResult.waitForDisplayed()
+        await this.resultmessage.waitForDisplayed()
 
         //Verify if the for is submitted succesfully
         await expect(this.resultmessage).toHaveTextContaining('Pre-retirement calculator')
