@@ -100,6 +100,7 @@ class RetireSavingCalculatorPage {
         //Enter data into various fields
         await this.EnterDataIntoCommonFields(CAge, cRetirementAgre, CIncome, CTotalSaving, CAnuualSaving, SavingIncreaseRate)
 
+        await (await this.labelMarried).waitForDisplayed();
         if (this.ValidateSSNBenfitOptions(true)) {           
             await this.labelMarried.click()
         }
@@ -119,6 +120,7 @@ class RetireSavingCalculatorPage {
     async ValidateSSNBenfitOptions(BenefitYes) {
         try {
             if (BenefitYes) {
+                await this.labelBenefitYes.waitForDisplayed()
                 await this.labelBenefitYes.click()
                 await this.singleRadioButton.waitForDisplayed()
                 //When the SSN benefit is set to Yes, Single and Married radio buttons should be dispalyed
@@ -178,6 +180,7 @@ class RetireSavingCalculatorPage {
             await this.savingIncreaseRate.click();
             await this.savingIncreaseRate.setValue("2");
         }
+
     }
 
    async ValidatePostRetirementFieldDisplay(RadioButtonYes, ExpectedInflation) {
@@ -244,7 +247,7 @@ class RetireSavingCalculatorPage {
         await this.postRetirementROIDefault.setValue(PostRetirementROIDefault);
 
         await this.saveChanges.click();
-        (await this.defaultCalculatorMessageValues).waitForDisplayed()
+        await this.defaultCalculatorMessageValues.waitForDisplayed()
         await expect(this.defaultCalculatorMessageValues).toHaveTextContaining('Default calculator values')
 
         await this.btnCalculate.click();
