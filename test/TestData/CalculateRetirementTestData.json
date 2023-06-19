@@ -1,0 +1,22 @@
+
+{
+    "URL": {
+        "url" : "/insights-tools/retirement-calculator.html"
+
+    },
+"person" : {
+    "CAge" : "40",
+    "CRetirementAge" : "68",
+    "CIncome" : "100000",
+    "CSpouseIncome" : "75000",
+    "CTotalSaving" : "500000",
+    "CAnuualSaving" : "10",
+    "SavingIncreaseRate" : "2",
+    "DefaultRetirementIncome" : "500",
+    "DefaultYearsPlanOnRetirementNeedToLast" : "20",
+    "DefaultPercentFinalYearIncome" : "75",
+    "PreRefinementInvestmentReturn" : "8",
+    "PostRefinementInvestmentReturn" : "5",
+    "ExpectedInflationRate" : "75"
+  }
+}
